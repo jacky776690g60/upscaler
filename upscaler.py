@@ -1,9 +1,9 @@
 """
 Image Upscaler
-Required Python3+
+Require Python3+
 
 OpenCV super resolution only works on 4 
-specific models, and these Upscaling 
+specific models, and these upscaling 
 models can be found here.
 
 Links:
@@ -13,7 +13,7 @@ https://github.com/Saafke/FSRCNN_Tensorflow
 https://github.com/fannymonori/TF-LAPSRN
 """
 
-import sys, os, argparse, time, glob
+import sys, os, argparse, time
 import cv2
 
 
@@ -27,10 +27,9 @@ def upscale():
     grp.add_argument("-d", "--img_dir", type=str, help="Path to the low-res image(s)")
     args = parser.parse_args()
 
-    mdl_idx = int(input("Which upscaling model to use:\n1. EDSR_x4\n2. ESPCN_x4\n3. FSRCNN_x3\n4. LapSRN_x8"))
+    mdl_idx = int(input("Which upscaling model to use:\n1. EDSR_x4\n2. ESPCN_x4\n3. FSRCNN_x3\n4. LapSRN_x8\n"))
     if not 1 <= mdl_idx <= 4:
         raise ValueError("Incorrect Input")
-        sys.exit()
 
     MDL_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "models",
                             "EDSR_x4.pb" if mdl_idx == 1 else
@@ -62,7 +61,6 @@ def upscale():
     else:
         if not os.path.exists(args.img_dir):
             raise FileNotFoundError("Provided path does not exist")
-            sys.exit()
 
         ext_list = ["bmp", "jpeg", "jpg", "jpe", "jp2", "tiff", "tif", "png"]
 
