@@ -2,7 +2,7 @@
 This is an image upscaler using opencv.
 
 # Requirements:
-Download the models from the following links and put them in a directory named "models"
+Download the models from the following links and put them in a directory named "models"\n
 (Credits to these developers)
 - https://github.com/Saafke/EDSR_Tensorflow
 - https://github.com/fannymonori/TF-ESPCN
