@@ -15,6 +15,7 @@ https://github.com/fannymonori/TF-LAPSRN
 
 import sys, os, argparse, time
 import cv2
+from progressbar import ProgressBar, TermArtist
 
 
 def upscale():
@@ -70,17 +71,20 @@ def upscale():
                     img_queue.append(os.path.join(path, f))
             
 
-    for img in img_queue:
+    progress_bar = ProgressBar(len(img_queue), bar_len=50, style=3)
+    for i, img in enumerate(img_queue):
         try:
             imgName, extension  = tuple(elem for elem in os.path.basename(img).split('.'))
-
-            print(f"\033[96m[INFO] Processing {imgName}.{extension}")
+            print(f"\r[INFO] Processing {imgName}.{extension}", flush=True)
             in_img  = cv2.imread(img)
             t1      = time.time()
+            progress_bar.draw(i)
             out_img = sr.upsample(in_img)
             t2      = time.time()
+            print()
             print(f"[INFO] (w, h): ({in_img.shape[1]}, {in_img.shape[0]}) -> ({out_img.shape[1]}, {out_img.shape[0]})")
-            print(f"[INFO] Time Elapsed: {t2 - t1:.6f} seconds\033[0m")
+            print(f"[INFO] Time Elapsed: {t2 - t1:.6f} seconds{TermArtist.WHITE}")
+            print()
 
             # =============================
             # Save to disk
@@ -91,10 +95,13 @@ def upscale():
             SAVE_PATH = os.path.join(SAVE_PATH, imgName + "_upscaled" + "." + extension)
 
             cv2.imwrite(SAVE_PATH, out_img)
-            print(f"\033[92m[INFO] Saved to:\n{SAVE_PATH}\033[0m")
+            
         except Exception as e:
-            print(f"\033[0m[ERROR] Something went wrong processing {imgName}\n{e}")
+            print(f"{TermArtist.WHITE}[ERROR] Something went wrong processing {imgName}\n{e}")
             sys.exit()
+        except KeyboardInterrupt:
+            print(TermArtist.WHITE)
+    del progress_bar
 
 
 if __name__ == "__main__":
