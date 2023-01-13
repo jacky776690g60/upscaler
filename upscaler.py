@@ -2,9 +2,8 @@
 Image Upscaler
 Require Python3+
 
-OpenCV super resolution only works on 4 
-specific models, and these upscaling 
-models can be found here.
+OpenCV super resolution. This works on 4 
+specific models, and they can be found here.
 
 Links:
 https://github.com/Saafke/EDSR_Tensorflow
@@ -12,7 +11,6 @@ https://github.com/fannymonori/TF-ESPCN
 https://github.com/Saafke/FSRCNN_Tensorflow
 https://github.com/fannymonori/TF-LAPSRN
 """
-
 import sys, os, argparse, time
 import cv2
 from progressbar import ProgressBar, TermArtist
@@ -29,8 +27,7 @@ def upscale():
     args = parser.parse_args()
 
     mdl_idx = int(input("Which upscaling model to use:\n1. EDSR_x4\n2. ESPCN_x4\n3. FSRCNN_x3\n4. LapSRN_x8\n"))
-    if not 1 <= mdl_idx <= 4:
-        raise ValueError("Incorrect Input")
+    if not 1 <= mdl_idx <= 4: raise ValueError("Incorrect Input")
 
     MDL_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "models",
                             "EDSR_x4.pb" if mdl_idx == 1 else
